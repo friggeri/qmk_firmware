@@ -1,0 +1,4 @@
+MIDI_ENABLE = no
+AUDIO_ENABLE = no
+EXTRAKEY_ENABLE = yes
+SRC += muse.c
