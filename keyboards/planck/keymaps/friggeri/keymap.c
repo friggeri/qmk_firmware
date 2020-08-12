@@ -49,6 +49,13 @@
 
 // open one password
 #define K_PASS LCMD(FR_GRV)
+#define K_MIC LCMD(LCTL(FR_SCLN))
+
+#define K_FOCUS LCMD(LCTL(LSFT(LALT(KC_F))))
+#define K_I_SHU LCMD(LCTL(LSFT(LALT(KC_J))))
+#define K_D_SHU LCMD(LCTL(LSFT(LALT(KC_K))))
+#define K_I_APE LCMD(LCTL(LSFT(LALT(KC_L))))
+#define K_D_APE LCMD(LCTL(LSFT(LALT(FR_M))))
 
 enum planck_layers {
   _BASE,
@@ -80,10 +87,10 @@ uint8_t pressed_alone = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_BASE] = LAYOUT_planck_grid(
-    KC_TAB,  FR_A,    FR_Z,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-    KC_ESC,  FR_Q,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    FR_M,    KC_ENT ,
+    KC_ESC,  FR_A,    FR_Z,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+    KC_TAB,  FR_Q,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    FR_M,    KC_ENT ,
     LEFT_SH, FR_W,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    FR_COMM, FR_SCLN, FR_COLN, KC_UP,   RGHT_SH,
-    HOME,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   _______, KC_LEFT, KC_DOWN, KC_RGHT
+    HOME,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RALT,   KC_LEFT, KC_DOWN, KC_RGHT
 ),
 [_LOWER] = LAYOUT_planck_grid(
     FR_AT,   FR_AMP,  FR_EACU, _______, _______, _______, FR_SECT, FR_EGRV, FR_EXLM, FR_CCED, FR_AGRV, _______,
@@ -94,11 +101,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_RAISE] = LAYOUT_planck_grid(
     FR_HASH, FR_1,    FR_2,    FR_3,    FR_4,    FR_5,    FR_6,    FR_7,    FR_8,    FR_9,    FR_0,    _______,
     _______, _______, _______, _______, _______, _______, _______, FR_UMLT, FR_ASTR, DEG,  FR_UNDS, _______,
-    _______, FR_LESS, _______, _______, _______, _______, _______, FR_PLUS, FR_PERC, FR_PND,  _______, _______,
+    _______, FR_GRTR, _______, _______, _______, _______, _______, FR_PLUS, FR_PERC, FR_PND,  _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 [_HOME] = LAYOUT_planck_grid(
-    TERM,    _______, _______, _______, _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,  KC_F12, _______,
+    TERM,    K_D_SHU, K_I_SHU, K_D_APE, K_I_APE, KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,  KC_F12, K_FOCUS,
     SP1,     SP2,     SP3,     SP4,     K_FULL,  _______, _______, _______, _______, _______, _______, K_PASS,
     _______, _______, _______, _______, _______, K_CAPF,  K_CAPR,  _______, _______, _______, KC_F2,   _______,
     _______, _______, _______, _______, _______, K_CHAR,  K_CHAR,  _______, _______, _______, KC_F1,   _______
