@@ -9,5 +9,6 @@
     },
     "files.associations": {
       "*.yaml": "home-assistant"
-    }
+    },
+    "editor.formatOnSave": false
 }

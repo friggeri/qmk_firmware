@@ -73,7 +73,7 @@ enum planck_keycodes {
   RGHT_SH
 };
 
-uint16_t last_pressed = 0;
+uint16_t timer;
 uint8_t pressed_alone = 0;
 #define PRESSED_LSFT 0
 #define PRESSED_RSFT 1
@@ -81,9 +81,9 @@ uint8_t pressed_alone = 0;
 #define PRESSED_RAIS 3
 #define PRESSED_HOME 4
 
-#define DUAL_TIMEOUT 300
+#define DUAL_TIMEOUT 150
 
-#define IS_LAST_PRESSED(x) (record->event.time - last_pressed < DUAL_TIMEOUT) && (pressed_alone & (1 << x))
+#define IS_LAST_PRESSED(x) (timer_elapsed(timer) < DUAL_TIMEOUT) && (pressed_alone & (1 << x))
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_BASE] = LAYOUT_planck_grid(
@@ -100,15 +100,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 [_RAISE] = LAYOUT_planck_grid(
     FR_HASH, FR_1,    FR_2,    FR_3,    FR_4,    FR_5,    FR_6,    FR_7,    FR_8,    FR_9,    FR_0,    _______,
-    _______, _______, _______, _______, _______, _______, _______, FR_UMLT, FR_ASTR, DEG,  FR_UNDS, _______,
+    _______, _______, _______, _______, _______, _______, _______, FR_UMLT, FR_ASTR, DEG,     FR_UNDS, _______,
     _______, FR_GRTR, _______, _______, _______, _______, _______, FR_PLUS, FR_PERC, FR_PND,  _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 [_HOME] = LAYOUT_planck_grid(
-    TERM,    K_D_SHU, K_I_SHU, K_D_APE, K_I_APE, KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,  KC_F12, K_FOCUS,
+    TERM,    _______, _______, _______, _______, KC_MNXT, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, _______,
     SP1,     SP2,     SP3,     SP4,     K_FULL,  _______, _______, _______, _______, _______, _______, K_PASS,
-    _______, _______, _______, _______, _______, K_CAPF,  K_CAPR,  _______, _______, _______, KC_F2,   _______,
-    _______, _______, _______, _______, _______, K_CHAR,  K_CHAR,  _______, _______, _______, KC_F1,   _______
+    _______, _______, _______, _______, _______, K_CAPF,  K_CAPR,  _______, _______, _______, KC_BRIU, _______,
+    _______, _______, _______, _______, _______, K_CHAR,  K_CHAR,  _______, _______, _______, KC_BRID, _______
 ),
 [_ADJUST] = LAYOUT_planck_grid(
   _______, _______, _______, _______, _______, _______,  _______,  _______, _______, _______, _______,   RESET,
@@ -125,7 +125,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     pressed_alone = 0;
-    last_pressed = record->event.time;
+    timer = timer_read();
 
     switch(keycode) {
       case LEFT_SH:
@@ -175,13 +175,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
         }
         return false;
-      case LOWER: 
+      case LOWER:
         layer_off(_LOWER);
         if (IS_LAST_PRESSED(PRESSED_LOW)) {
           tap_code16(FR_QUOT);
         }
         return false;
-      case RAISE: 
+      case RAISE:
         layer_off(_RAISE);
         if (IS_LAST_PRESSED(PRESSED_RAIS)) {
           tap_code16(FR_APOS);

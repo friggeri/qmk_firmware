@@ -1,13 +1,36 @@
 #include QMK_KEYBOARD_H
 
+uint16_t timer;
+
+enum planck_keycodes {
+  ADJUST = SAFE_RANGE,
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-  [0] = LAYOUT(KC_KP_7, KC_KP_8, KC_KP_9,
-               KC_KP_4, LT(1, KC_KP_5), KC_KP_6,
-               KC_KP_1, KC_KP_2, KC_KP_3),
+  [0] = LAYOUT(G(KC_F17), G(KC_F18), G(KC_F19),
+               G(KC_F14), ADJUST, G(KC_F16),
+               G(KC_F11), G(KC_F12), G(KC_F13)),
 
-  [1] = LAYOUT(RGB_RMOD, RGB_VAI, RGB_MOD,
-               RGB_HUI, KC_TRNS, RGB_SAI,
-               RGB_HUD, RGB_VAD, RGB_SAD),
+  [1] = LAYOUT(RGB_TOG, KC_TRNS, RESET,
+               KC_TRNS, KC_TRNS, KC_TRNS,
+               KC_TRNS, KC_TRNS, KC_TRNS),
 
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch(keycode) {
+    case ADJUST:
+      if (record->event.pressed) {
+        timer = timer_read();
+        layer_on(1);
+      } else {
+        layer_off(1);
+        if (timer_elapsed(timer) < 150) {
+          tap_code16(G(KC_F15));
+        }
+      }
+      return false;
+  }
+  return true;
+}
